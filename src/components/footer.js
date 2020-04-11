@@ -1,18 +1,15 @@
 import React from 'react'
-import Link from '../components/link'
 import {css} from '@emotion/core'
 import theme from '../../config/theme'
 import {bpMaxSM} from '../lib/breakpoints'
 import SubscribeForm from './forms/subscribe'
-import {Twitter, GitHub, YouTube, RSS} from './social'
+import {Twitter, GitHub, RSS} from './social'
 import Container from './container'
-
-import Signature from '../images/signature.png'
 
 const Footer = ({subscribeForm = <SubscribeForm />, maxWidth}) => (
   <footer
     css={css`
-      background: ${theme.colors.purple_dark};
+      background: ${theme.colors.dark};
       color: white;
       margin-top: 70px;
     `}
@@ -58,19 +55,8 @@ const Footer = ({subscribeForm = <SubscribeForm />, maxWidth}) => (
         <div>
           <Twitter />
           <GitHub />
-          <YouTube />
           <RSS />
         </div>
-
-        <Link to="/" aria-label="Return to homepage">
-          <img
-            src={Signature}
-            alt="Kent C. Dodds"
-            css={css`
-              max-width: 100px;
-            `}
-          />
-        </Link>
       </div>
     </Container>
   </footer>

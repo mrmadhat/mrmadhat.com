@@ -35,7 +35,7 @@ const reset = css`
   }
   body {
     color: ${theme.colors.body_color};
-    background-color: ${theme.colors.bg_color};
+    background-color: ${theme.colors.light};
   }
   ::selection {
     color: ${theme.colors.white};
@@ -111,7 +111,7 @@ const reset = css`
   }
   table {
     border-collapse: collapse;
-    background-color: ${theme.colors.bg_color};
+    background-color: ${theme.colors.light};
   }
   caption {
     padding-top: 1.5rem;

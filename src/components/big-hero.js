@@ -6,18 +6,11 @@ import {rhythm, fonts} from '../lib/typography'
 import Markdown from 'react-markdown'
 import Container from 'components/container'
 
-import heroImageRight from '../images/hero/path-right.svg'
-import heroImageLeft from '../images/hero/path-left.svg'
-import photoOfKent from '../images/hero/kent.png'
-
 function Hero({
   children,
-  title = `Hi, I'm Kent C. Dodds. I help people make the world better through quality software.`,
+  title = `A product development journey by Daniel Gregory`,
   text,
-  background = `url(${heroImageRight}), url(${heroImageLeft}),
-  linear-gradient(-213deg, #5e31dc 0%, #3155dc 100%)`,
-  image = `${photoOfKent}`,
-  headerColor, // pluk this out of the props so it's not applied to the section
+  background,
   ...props
 }) {
   return (
@@ -27,7 +20,7 @@ function Hero({
           color: ${theme.colors.white};
         }
         width: 100%;
-        background: #3155dc;
+        background: #404040;
         background-image: ${background};
         background-position: center right, center left;
         background-repeat: no-repeat;
@@ -36,7 +29,7 @@ function Hero({
         position: relative;
         align-items: center;
         display: flex;
-        padding-top: 40px;
+        padding: 60px 0px;
 
         ${bpMaxMD} {
           background-size: cover;
@@ -70,21 +63,6 @@ function Hero({
               visibility: visible;
               width: 250px;
               height: 250px;
-              ${
-                image === photoOfKent
-                  ? `
-                      width: 160px;
-                      height: 160px;
-                      overflow: 'hidden';
-                      border-radius: 50%;
-                      background: #4b4ddf;
-                    `
-                  : null
-              }
-              background-image: url(${image});
-              background-size: cover;
-              background-position-y: 10px;
-              background-repeat: no-repeat;
               margin-bottom: 25px;
             }
           `}
@@ -106,7 +84,6 @@ function Hero({
               height: 100%;
               display: flex;
               //align-self: center;
-              padding-bottom: ${image === photoOfKent ? '40px' : '0'};
             `}
           >
             {title}
@@ -134,24 +111,6 @@ function Hero({
             </Markdown>
           )}
           {children}
-        </div>
-        <div
-          css={{
-            marginRight: '-160px',
-            width: 380,
-            height: 336,
-            display: 'flex',
-            [bpMaxMD]: {
-              display: 'none',
-              visibility: 'hidden',
-            },
-          }}
-        >
-          <img
-            src={image}
-            alt="Kent C. Dodds"
-            css={{maxWidth: '100%', marginBottom: 0}}
-          />
         </div>
       </Container>
     </section>

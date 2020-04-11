@@ -10,38 +10,6 @@ const stripMarkdownPlugin = require('strip-markdown')
 const {zipFunctions} = require('@netlify/zip-it-and-ship-it')
 const config = require('./config/website')
 
-const twoDigits = n => (n.toString().length < 2 ? `0${n}` : n)
-
-const createWorkshops = (createPage, edges) => {
-  edges.forEach(({node}, i) => {
-    const prev = i === 0 ? null : edges[i - 1].node
-    const next = i === edges.length - 1 ? null : edges[i + 1].node
-    const pagePath = node.fields.slug
-
-    createPage({
-      path: pagePath,
-      component: path.resolve(`./src/templates/workshop-page.js`),
-      context: {
-        id: node.id,
-        prev,
-        next,
-      },
-    })
-  })
-}
-
-function createWorkshopPages({data, actions}) {
-  if (!data.edges.length) {
-    throw new Error('There are no workshops!')
-  }
-
-  const {edges} = data
-  const {createPage} = actions
-  createWorkshops(createPage, edges)
-
-  return null
-}
-
 function stripMarkdown(markdownString) {
   return remark()
     .use(stripMarkdownPlugin)
@@ -78,7 +46,7 @@ const createPosts = (createPage, createRedirect, edges) => {
   })
 }
 
-function createBlogPages({data, actions}) {
+function createArticlePages({data, actions}) {
   if (!data.edges.length) {
     throw new Error('There are no posts!')
   }
@@ -86,32 +54,6 @@ function createBlogPages({data, actions}) {
   const {edges} = data
   const {createRedirect, createPage} = actions
   createPosts(createPage, createRedirect, edges)
-  return null
-}
-
-const createEpisodes = (createPage, edges) => {
-  edges.forEach(({node}) => {
-    createPage({
-      path: node.fields.slug,
-      component: path.resolve(`./src/templates/podcast-episode.js`),
-      context: {
-        slug: node.fields.slug,
-        simpleCastId: node.frontmatter.simpleCastId,
-        title: node.fields.title,
-        season: node.frontmatter.season,
-      },
-    })
-  })
-}
-
-function createPodcastPages({data, actions}) {
-  if (!data.edges.length) {
-    throw new Error('There are no podcast episodes!')
-  }
-  const {edges} = data
-  const {createPage} = actions
-
-  createEpisodes(createPage, edges)
   return null
 }
 
@@ -136,53 +78,10 @@ const createPages = async ({actions, graphql}) => {
       }
     }
     query {
-      podcast: allMdx(
-        filter: {fileAbsolutePath: {regex: "//content/podcast//"}}
-      ) {
-        edges {
-          node {
-            fileAbsolutePath
-            frontmatter {
-              simpleCastId
-              season
-            }
-            fields {
-              title
-              slug
-            }
-          }
-        }
-      }
-      blog: allMdx(
+      articles: allMdx(
         filter: {
           frontmatter: {published: {ne: false}}
-          fileAbsolutePath: {regex: "//content/blog//"}
-        }
-        sort: {order: DESC, fields: [frontmatter___date]}
-      ) {
-        edges {
-          node {
-            ...PostDetails
-          }
-        }
-      }
-      writing: allMdx(
-        filter: {
-          frontmatter: {published: {ne: false}}
-          fileAbsolutePath: {regex: "//content/writing-blog//"}
-        }
-        sort: {order: DESC, fields: [frontmatter___date]}
-      ) {
-        edges {
-          node {
-            ...PostDetails
-          }
-        }
-      }
-      workshops: allMdx(
-        filter: {
-          frontmatter: {published: {ne: false}}
-          fileAbsolutePath: {regex: "//content/workshops//"}
+          fileAbsolutePath: {regex: "//content/articles//"}
         }
         sort: {order: DESC, fields: [frontmatter___date]}
       ) {
@@ -199,26 +98,11 @@ const createPages = async ({actions, graphql}) => {
     return Promise.reject(errors)
   }
 
-  const {blog, writing, workshops, podcast} = data
+  const {articles} = data
 
-  createPodcastPages({
-    podcastPath: '',
-    data: podcast,
-    actions,
-  })
-
-  createBlogPages({
-    blogPath: '/blog',
-    data: blog,
-    actions,
-  })
-  createBlogPages({
-    blogPath: '/writing/blog',
-    data: writing,
-    actions,
-  })
-  createWorkshopPages({
-    data: workshops,
+  createArticlePages({
+    articlesPath: '/articles',
+    data: articles,
     actions,
   })
 }
@@ -243,35 +127,11 @@ function onCreateMdxNode({node, getNode, actions}) {
   const {createNodeField} = actions
   let slug =
     node.frontmatter.slug || createFilePath({node, getNode, basePath: `pages`})
-  let {isWriting, isWorkshop, isScheduled, isPodcast} = false
 
-  if (node.fileAbsolutePath.includes('content/blog/')) {
-    slug = `/blog/${node.frontmatter.slug || slugify(parentNode.name)}`
-  }
+  const isScheduled = false
 
-  if (node.fileAbsolutePath.includes('content/podcast/')) {
-    slug = `chats-with-kent-podcast/seasons/${twoDigits(
-      node.frontmatter.season,
-    )}/episodes/${node.frontmatter.slug}`
-    isPodcast = true
-  }
-
-  if (node.fileAbsolutePath.includes('content/workshops/')) {
-    isWriting = false
-    isWorkshop = true
-    isScheduled = false
-    if (node.frontmatter.date) {
-      isWriting = false
-      isScheduled = true
-    }
-    slug = `/workshops/${
-      node.frontmatter.slug || slugify(node.frontmatter.title)
-    }`
-  }
-
-  if (node.fileAbsolutePath.includes('content/writing-blog/')) {
-    isWriting = true
-    slug = `/writing/blog/${node.frontmatter.slug || slugify(parent.name)}`
+  if (node.fileAbsolutePath.includes('content/articles/')) {
+    slug = `/articles/${node.frontmatter.slug || slugify(parentNode.name)}`
   }
 
   createNodeField({
@@ -295,7 +155,7 @@ function onCreateMdxNode({node, getNode, actions}) {
   createNodeField({
     name: 'author',
     node,
-    value: node.frontmatter.author || 'Kent C. Dodds',
+    value: node.frontmatter.author || 'Daniel Gregory',
   })
 
   createNodeField({
@@ -364,7 +224,7 @@ function onCreateMdxNode({node, getNode, actions}) {
   createNodeField({
     name: 'editLink',
     node,
-    value: `https://github.com/kentcdodds/kentcdodds.com/edit/master${node.fileAbsolutePath.replace(
+    value: `https://github.com/mrmadhat/mrmadhat.com/edit/master${node.fileAbsolutePath.replace(
       __dirname,
       '',
     )}`,
@@ -373,7 +233,7 @@ function onCreateMdxNode({node, getNode, actions}) {
   createNodeField({
     name: 'historyLink',
     node,
-    value: `https://github.com/kentcdodds/kentcdodds.com/commits/master${node.fileAbsolutePath.replace(
+    value: `https://github.com/mrmadhat/mrmadhat.com/commits/master${node.fileAbsolutePath.replace(
       __dirname,
       '',
     )}`,
@@ -382,31 +242,13 @@ function onCreateMdxNode({node, getNode, actions}) {
   createNodeField({
     name: 'noFooter',
     node,
-    value: isWriting ? false : node.frontmatter.noFooter || false,
-  })
-
-  createNodeField({
-    name: 'isWriting',
-    node,
-    value: isWriting,
-  })
-
-  createNodeField({
-    name: 'isWorkshop',
-    node,
-    value: isWorkshop,
+    value: node.frontmatter.noFooter || false,
   })
 
   createNodeField({
     name: 'isScheduled',
     node,
     value: isScheduled,
-  })
-
-  createNodeField({
-    name: 'isPodcast',
-    node,
-    value: isPodcast,
   })
 }
 

@@ -3,7 +3,6 @@ import Container from 'components/container'
 import SEO from 'components/seo'
 import Layout from 'components/layout'
 import BigHero from 'components/big-hero'
-import theme from '../../config/theme'
 
 function MarkdownPage({children, pageContext: {frontmatter}}) {
   return (
@@ -18,7 +17,6 @@ function MarkdownPage({children, pageContext: {frontmatter}}) {
         }
         noFooter={frontmatter.noFooter}
         frontmatter={frontmatter}
-        headerColor={theme.colors.white}
       >
         <Container maxWidth={frontmatter.maxWidth}>{children}</Container>
       </Layout>

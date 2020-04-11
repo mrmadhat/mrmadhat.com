@@ -1,10 +1,10 @@
 {
-  "name": "kentcdodds.com",
+  "name": "mrmadhat.com",
   "private": true,
-  "description": "Kent's personal website",
+  "description": "Building products that help people and helping people to build products",
   "version": "1.0.5",
-  "author": "Kent C. Dodds <kent@doddsfamily.us> (https://kentcdodds.com)",
-  "repository": "https://github.com/kentcdodds/kentcdodds.com",
+  "author": "Daniel Gregory <danny@mrmadhat.com> (https://mrmadhat.com)",
+  "repository": "https://github.com/mrmadhat/mrmadhat.com",
   "dependencies": {
     "@babel/runtime": "^7.9.2",
     "@emotion/core": "^10.0.28",
@@ -29,6 +29,7 @@
     "gatsby-parallel-runner": "^1.2.3",
     "gatsby-plugin-catch-links": "^2.2.1",
     "gatsby-plugin-emotion": "^4.2.1",
+    "gatsby-plugin-fathom": "^1.2.0",
     "gatsby-plugin-feed": "^2.4.1",
     "gatsby-plugin-manifest": "^2.3.3",
     "gatsby-plugin-mdx": "^1.1.4",

@@ -36,12 +36,11 @@ function PostSubmissionMessage() {
 }
 
 const SubscribeFormWrapper = styled.div({
-  color: 'white',
+  color: theme.brand.contrast,
   maxWidth: '350px',
   padding: '40px',
-  background: theme.colors.purple_dark,
-  backgroundImage:
-    'linear-gradient(-213deg, #5e31dc 0%, #3155dc 100%), linear-gradient(32deg, rgba(255, 255, 255, 0.25) 33%, rgba(0, 0, 0, 0.25) 100%)',
+  background: theme.colors.dark,
+  backgroundImage: `linear-gradient(-213deg, ${theme.brand.secondary} 0%, ${theme.brand.primary} 100%), linear-gradient(32deg, rgba(255, 255, 255, 0.25) 33%, rgba(0, 0, 0, 0.25) 100%)`,
   borderRadius: '5px',
 })
 
@@ -79,55 +78,10 @@ const formCss = css`
     font-size: 16px;
   }
 `
-const StyledForm = styled.form`
-  ${formCss}
-`
+
 const StyledFormikForm = styled(Form)`
   ${formCss}
 `
-
-export function TinyLetterSubscribe() {
-  return (
-    <SubscribeFormWrapper>
-      <StyledForm
-        action="https://tinyletter.com/shurlan"
-        method="post"
-        target="popupwindow"
-        onSubmit={() => {
-          window.open(
-            'https://tinyletter.com/shurlan',
-            'popupwindow',
-            'scrollbars=yes,width=800,height=600',
-          )
-          return true
-        }}
-      >
-        <h3
-          css={css`
-            margin-bottom: ${rhythm(1)};
-            margin-top: 0;
-            color: white;
-          `}
-        >
-          Join the Writing Newsletter
-        </h3>
-        <p>
-          <label htmlFor="tlemail">Email address:</label>
-          <input
-            aria-label="your email address"
-            aria-required="true"
-            placeholder="jane@acme.com"
-            type="email"
-            name="email"
-            id="tlemail"
-          />
-        </p>
-        <input type="hidden" value="1" name="embed" />
-        <button type="submit">Subscribe</button>
-      </StyledForm>
-    </SubscribeFormWrapper>
-  )
-}
 
 function fetchReducer(state, {type, response, error}) {
   switch (type) {
@@ -178,7 +132,7 @@ function useFetch({url, body}) {
 function Subscribe({style, tags = [], header = 'Join the Newsletter'}) {
   const [values, setValues] = React.useState()
   const {pending, response, error} = useFetch({
-    url: `https://app.convertkit.com/forms/827139/subscriptions`,
+    url: `https://app.convertkit.com/forms/1313104/subscriptions`,
     body: values,
   })
 
@@ -194,7 +148,7 @@ function Subscribe({style, tags = [], header = 'Join the Newsletter'}) {
           css={css`
             margin-bottom: ${rhythm(1)};
             margin-top: 0;
-            color: white;
+            color: ${theme.brand.contrast};
           `}
         >
           {header}

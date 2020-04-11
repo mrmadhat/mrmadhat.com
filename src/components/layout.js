@@ -62,12 +62,12 @@ export const globalStyles = css`
   }
   button {
     border-radius: 4px;
-    background-color: ${theme.colors.green};
+    background-color: ${theme.brand.contrast};
     border: none;
     color: ${theme.colors.white};
     padding: 8px 15px;
     cursor: pointer;
-    border: 1px solid ${theme.colors.green};
+    border: 1px solid ${theme.brand.contrast};
     transition: ${theme.transition.ease};
     :hover:not(:disabled) {
       background: ${theme.colors.link_color_hover};
@@ -127,16 +127,8 @@ const DefaultHero = styled.section`
     color: ${theme.colors.white};
   }
   width: 100%;
-  ${({headerColor}) =>
-    headerColor
-      ? css`
-          background: #3155dc;
-          background-image: linear-gradient(-213deg, #5e31dc 0%, #3155dc 100%);
-          background-position: center right, center left;
-          background-repeat: no-repeat;
-          background-size: contain;
-        `
-      : null} position: relative;
+  position: relative;
+  background: ${theme.colors.dark};
   z-index: 0;
   align-items: center;
   display: flex;
@@ -151,14 +143,13 @@ const DefaultHero = styled.section`
 
 function Layout({
   headerLink,
-  siteTitle = 'Kent C. Dodds',
+  siteTitle = 'mrmadhat',
   frontmatter = {},
   hero = <DefaultHero />,
   subscribeForm,
   children,
   dark,
   headerBg,
-  headerColor,
   noFooter,
   backgroundColor,
   backgroundImage,
@@ -207,7 +198,6 @@ function Layout({
         ]}
       >
         <html lang="en" />
-        <script src="https://js.tito.io/v1" async />
         <noscript>This site runs best with JavaScript enabled.</noscript>
       </Helmet>
       <div
@@ -221,14 +211,13 @@ function Layout({
         `}
       >
         <div css={{flex: '1 0 auto'}}>
-          {React.cloneElement(hero, {headerColor})}
+          {React.cloneElement(hero)}
           <Header
             maxWidth={maxWidth}
             siteTitle={siteTitle}
             headerLink={headerLink}
             dark={dark}
             bgColor={headerBg}
-            headerColor={headerColor}
             fixed={fixedHeader}
             headerImage={logo}
           />

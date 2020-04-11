@@ -2,8 +2,6 @@ const path = require('path')
 const config = require('./config/website')
 const {createProxyMiddleware} = require('http-proxy-middleware')
 
-const eggheadTransformer = require('./other/embedder-transformers/egghead')
-
 const here = (...p) => path.join(__dirname, ...p)
 
 require('dotenv').config({
@@ -61,29 +59,8 @@ module.exports = {
     {
       resolve: 'gatsby-source-filesystem',
       options: {
-        path: `${__dirname}/content/blog`,
-        name: 'blog',
-      },
-    },
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        path: `${__dirname}/content/writing-blog`,
-        name: 'writing-blog',
-      },
-    },
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        path: `${__dirname}/content/workshops`,
-        name: 'workshops',
-      },
-    },
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        path: `${__dirname}/content/podcast`,
-        name: 'podcast',
+        path: `${__dirname}/content/articles`,
+        name: 'articles',
       },
     },
     {
@@ -108,15 +85,6 @@ module.exports = {
               backgroundColor: '#fafafa',
               maxWidth: 1035,
             },
-          },
-          {
-            resolve: `gatsby-remark-embedder`,
-            options: {
-              customTransformers: [eggheadTransformer],
-            },
-          },
-          {
-            resolve: require.resolve('./other/gatsby-remark-af'),
           },
         ],
       },
@@ -173,17 +141,11 @@ module.exports = {
       resolve: `gatsby-plugin-feed`,
       options: {
         feeds: [
-          getBlogFeed({
-            filePathRegex: `//content/blog//`,
-            blogUrl: 'https://kentcdodds.com/blog',
-            output: '/blog/rss.xml',
-            title: 'Kent C. Dodds Blog RSS Feed',
-          }),
-          getBlogFeed({
-            filePathRegex: `//content/writing-blog//`,
-            blogUrl: 'https://kentcdodds.com/writing/blog',
-            output: '/writing/blog/rss.xml',
-            title: `Kent's Writing Blog RSS Feed`,
+          getArticleFeed({
+            filePathRegex: `//content/articles//`,
+            articleUrl: 'https://mrmadhat.com/articles',
+            output: '/articles/rss.xml',
+            title: "Daniel Gregory's Article RSS Feed",
           }),
         ],
       },
@@ -217,10 +179,19 @@ module.exports = {
       },
     },
     'gatsby-plugin-sitemap',
+    {
+      resolve: 'gatsby-plugin-fathom',
+      options: {
+        // Unique site id
+        siteId: 'DYNUYWTN',
+        // Domain whitelist
+        whitelistHostnames: ['mrmadhat.com'],
+      },
+    },
   ],
 }
 
-function getBlogFeed({filePathRegex, blogUrl, ...overrides}) {
+function getArticleFeed({filePathRegex, articleUrl, ...overrides}) {
   /**
    * These RSS feeds can be quite expensive to generate. Limiting the number of
    * posts and keeping each item's template lightweight (only using frontmatter,

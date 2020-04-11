@@ -1,4 +1,4 @@
-# Kent C. Dodds personal website
+# MrMadHat website
 
 [![All Contributors](https://img.shields.io/badge/all_contributors-103-orange.svg?style=flat-square)](#contributors)
 
@@ -182,6 +182,7 @@ Thanks goes to these wonderful people
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the

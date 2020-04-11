@@ -100,32 +100,11 @@ const Toggle = ({color = 'white'}) => {
             `}
           >
             <Link
-              aria-label="View blog page"
-              to="/blog"
+              aria-label="View articles page"
+              to="/articles"
               activeClassName="active"
             >
-              Blog
-            </Link>
-            <Link
-              aria-label="View talks page"
-              to="/talks"
-              activeClassName="active"
-            >
-              Talks
-            </Link>
-            <Link
-              aria-label="View workshops page"
-              to="/workshops"
-              activeClassName="active"
-            >
-              Workshops
-            </Link>
-            <Link
-              aria-label="View podcast page"
-              to="/chats-with-kent-podcast"
-              activeClassName="active"
-            >
-              Podcast
+              Articles
             </Link>
             <Link
               aria-label="View about page"

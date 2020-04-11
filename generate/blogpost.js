@@ -31,7 +31,7 @@ const listify = a =>
         .filter(Boolean)
     : null
 
-async function generateBlogPost() {
+async function generateArticle() {
   const {title, description, categories, keywords} = await inquirer.prompt([
     {
       type: 'input',
@@ -55,7 +55,7 @@ async function generateBlogPost() {
     },
   ])
   const slug = slugify(title)
-  const destination = fromRoot('content/blog', slug)
+  const destination = fromRoot('content/articles', slug)
   mkdirp.sync(destination)
 
   const bannerCredit = await getBannerPhoto(title, destination)
@@ -65,7 +65,7 @@ async function generateBlogPost() {
       slug,
       title,
       date: formatDate(new Date()),
-      author: 'Kent C. Dodds',
+      author: 'Daniel Gregory',
       description: `_${description}_`,
       categories: listify(categories),
       keywords: listify(keywords),
@@ -140,6 +140,6 @@ function removeEmpty(obj) {
   }, {})
 }
 
-generateBlogPost()
+generateArticle()
 
 /* eslint no-console:0 */

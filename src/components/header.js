@@ -4,35 +4,25 @@ import {css} from '@emotion/core'
 import styled from '@emotion/styled'
 import theme from '../../config/theme'
 import {fonts} from '../lib/typography'
-import kent from '../images/kent.png'
+import logo from '../images/logo.png'
 import MobileNav from './mobile-nav'
 import Container from './container'
 import {bpMaxSM} from '../lib/breakpoints'
 import {lighten} from 'polished'
 
-function HeaderLink({headerColor, activeClassName = 'active', ...props}) {
+function HeaderLink({activeClassName = 'active', ...props}) {
   return (
     <Link
       activeClassName={activeClassName}
       partiallyActive={true}
       css={{
         textDecoration: 'none',
-        color: headerColor ? headerColor : theme.colors.body_color,
+        color: theme.colors.light,
         '&:hover,&:focus': {
-          background:
-            headerColor === theme.colors.white
-              ? 'rgba(40, 28, 77, 0.3)'
-              : lighten(0.4, theme.brand.primary),
-          color:
-            headerColor === theme.colors.white
-              ? 'white'
-              : theme.colors.link_color_hover,
+          background: lighten(0.4, theme.brand.primary),
         },
         '&.active': {
-          background:
-            headerColor === theme.colors.white
-              ? 'rgba(40, 28, 77, 0.3)'
-              : lighten(0.4, theme.brand.primary),
+          background: theme.brand.primary,
         },
       }}
       {...props}
@@ -55,7 +45,6 @@ function Header({
   bgColor = 'none',
   siteTitle,
   headerLink = '/',
-  headerColor = 'black',
   fixed = false,
   headerImage = true,
   maxWidth = 720,
@@ -90,7 +79,6 @@ function Header({
             to={headerLink}
             aria-label="go to homepage"
             activeClassName="none"
-            headerColor={headerColor}
             css={{
               position: 'relative',
               fontFamily: fonts.regular,
@@ -101,8 +89,7 @@ function Header({
                 maxWidth: '50px',
                 position: 'absolute',
                 borderRadius: '100%',
-                background:
-                  headerColor === '#fff' ? 'rgba(40, 28, 77, 0.7)' : '#f1f1f1',
+                background: '#f1f1f1',
               },
               ':hover, :focus': {
                 background: 'transparent',
@@ -112,7 +99,7 @@ function Header({
               },
             }}
           >
-            {headerImage && <img src={kent} alt="Kent C. Dodds" />}{' '}
+            {headerImage && <img src={logo} alt="MrMadHat Logo" />}{' '}
             <span>{siteTitle}</span>
           </HeaderLink>
           <div
@@ -131,40 +118,11 @@ function Header({
               }
             `}
           >
-            <MobileNav color={headerColor} />
-            <NavLink
-              headerColor={headerColor}
-              to="/blog/"
-              aria-label="View blog page"
-            >
-              Blog
+            <MobileNav />
+            <NavLink to="/articles/" aria-label="View articles page">
+              Articles
             </NavLink>
-            <NavLink
-              headerColor={headerColor}
-              to="/talks/"
-              aria-label="View talks page"
-            >
-              Talks
-            </NavLink>
-            <NavLink
-              headerColor={headerColor}
-              to="/workshops/"
-              aria-label="View workshops page"
-            >
-              Workshops
-            </NavLink>
-            <NavLink
-              headerColor={headerColor}
-              to="/chats-with-kent-podcast"
-              aria-label="View podcast page"
-            >
-              Podcast
-            </NavLink>
-            <NavLink
-              headerColor={headerColor}
-              to="/about/"
-              aria-label="View about page"
-            >
+            <NavLink to="/about/" aria-label="View about page">
               About
             </NavLink>
           </div>

@@ -15,8 +15,8 @@ function getMatchSorterWorker() {
   return matchSorterWorker
 }
 
-function BlogPostCard({blogpost}) {
-  const {slug, productionUrl, title, description, keywords, banner} = blogpost
+function ArticleCard({article}) {
+  const {slug, productionUrl, title, description, keywords, banner} = article
   const defaultCopyText = 'Copy URL'
   const [copyText, setCopyText] = React.useState(defaultCopyText)
 
@@ -75,13 +75,15 @@ function BlogPostCard({blogpost}) {
             {copyText}
           </button>
         </div>
-        <Img fluid={banner.childImageSharp.fluid} alt={keywords.join(', ')} />
+        {!!banner && (
+          <Img fluid={banner.childImageSharp.fluid} alt={keywords.join(', ')} />
+        )}
         <div css={{margin: '16px 0 0 0'}}>{description}</div>
       </RouterLink>
     </div>
   )
 }
-BlogPostCard = React.memo(BlogPostCard)
+ArticleCard = React.memo(ArticleCard)
 
 function useQueryParamState(searchParamName) {
   const [value, setValue] = React.useState(() => {
@@ -158,33 +160,33 @@ function Intersection({onVisible}) {
 function Search(props) {
   // this will be the same every time and because this re-renders on every
   // keystroke I'm pretty sure useMemo is appropriate here.
-  const blogposts = React.useMemo(() => {
-    return props.blogposts.edges.map(e => ({
+  const articles = React.useMemo(() => {
+    return props.articles.edges.map(e => ({
       ...e.node.fields,
       excerpt: e.node.excerpt,
     }))
-  }, [props.blogposts.edges])
+  }, [props.articles.edges])
 
   const categories = React.useMemo(
-    () => Array.from(new Set(blogposts.flatMap(post => post.categories))),
-    [blogposts],
+    () => Array.from(new Set(articles.flatMap(post => post.categories))),
+    [articles],
   )
 
   const [search, setSearch] = useQueryParamState('q')
-  const [filteredBlogPosts, setFilteredBlogPosts] = React.useState(
+  const [filteredArticles, setFilteredArticles] = React.useState(
     // if there's a search, let's wait for it to load
-    // otherwise let's initialize to the blogposts
-    search ? [] : blogposts,
+    // otherwise let's initialize to the articles
+    search ? [] : articles,
   )
 
   const [maxPostsToRender, setMaxPostsToRender] = React.useState(10)
-  const blogPostsToDisplay = filteredBlogPosts.slice(0, maxPostsToRender)
+  const articlesToDisplay = filteredArticles.slice(0, maxPostsToRender)
   React.useEffect(() => {
     if (!search) {
-      setFilteredBlogPosts(blogposts)
+      setFilteredArticles(articles)
     }
     getMatchSorterWorker()
-      .searchAndSort(blogposts, search, {
+      .searchAndSort(articles, search, {
         keys: [
           {
             key: 'title',
@@ -208,13 +210,13 @@ function Search(props) {
         ],
       })
       .then(
-        results => setFilteredBlogPosts(results),
+        results => setFilteredArticles(results),
         error => {
           // eslint-disable-next-line no-console
           console.error(error)
         },
       )
-  }, [blogposts, search])
+  }, [articles, search])
 
   function handleCategoryClick(category) {
     setSearch(s => {
@@ -233,8 +235,8 @@ function Search(props) {
             css={{width: '100%', paddingRight: 50}}
             onChange={event => setSearch(event.target.value)}
             type="search"
-            placeholder="Search Blogposts"
-            aria-label="Search Blogposts"
+            placeholder="Search Articles"
+            aria-label="Search Articles"
             value={search}
             autoFocus
           />
@@ -247,7 +249,7 @@ function Search(props) {
               fontSize: '0.8rem',
             }}
           >
-            {filteredBlogPosts.length}
+            {filteredArticles.length}
           </div>
         </div>
         <div>
@@ -263,7 +265,7 @@ function Search(props) {
         </div>
         <small css={{marginTop: 10, display: 'block'}}>
           {`If you can't find what you're looking for with this, try `}
-          <a href="https://www.google.com/search?q=site%3Akentcdodds.com%2Fblog+testing">
+          <a href="https://www.google.com/search?q=site%3Amrmadhat.com%2Farticles">
             using Google
           </a>
           {'.'}
@@ -277,11 +279,11 @@ function Search(props) {
           justifyContent: 'center',
         }}
       >
-        {blogPostsToDisplay.map(blogpost => (
-          <BlogPostCard key={blogpost.id} blogpost={blogpost} />
+        {articlesToDisplay.map(article => (
+          <ArticleCard key={article.id} article={article} />
         ))}
       </div>
-      {maxPostsToRender < filteredBlogPosts.length ? (
+      {maxPostsToRender < filteredArticles.length ? (
         <>
           <div css={{marginTop: 20, textAlign: 'center'}}>
             Oh? You wanna scroll do you? Rendering all the posts...

@@ -53,7 +53,7 @@ export const latestArticle = graphql`
       sort: {fields: [frontmatter___date], order: DESC}
       filter: {
         frontmatter: {published: {ne: false}}
-        fileAbsolutePath: {regex: "//content/blog//"}
+        fileAbsolutePath: {regex: "//content/articles//"}
       }
     ) {
       totalCount
