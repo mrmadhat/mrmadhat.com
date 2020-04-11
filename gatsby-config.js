@@ -184,8 +184,6 @@ module.exports = {
       options: {
         // Unique site id
         siteId: 'DYNUYWTN',
-        // Domain whitelist
-        whitelistHostnames: ['mrmadhat.com'],
       },
     },
   ],
