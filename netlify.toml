@@ -2,7 +2,3 @@
   for = "/rss.xml"
   [headers.values]
     Access-Control-Allow-Origin = "*"
-
-[build]
-  command = "npm run netlify"
-  functions = "public/functions/"

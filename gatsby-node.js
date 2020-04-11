@@ -1,13 +1,12 @@
-const fs = require('fs')
 const path = require('path')
 const {URL} = require('url')
-const rimraf = require('rimraf')
+
 const {spawnSync, spawn} = require('child_process')
 const slugify = require('@sindresorhus/slugify')
 const {createFilePath} = require('gatsby-source-filesystem')
 const remark = require('remark')
 const stripMarkdownPlugin = require('strip-markdown')
-const {zipFunctions} = require('@netlify/zip-it-and-ship-it')
+
 const config = require('./config/website')
 
 function stripMarkdown(markdownString) {
@@ -275,18 +274,12 @@ const onPreBootstrap = () => {
   }
 }
 
-const onPostBuild = async () => {
+const onPostBuild = () => {
   if (process.env.gatsby_executing_command === 'develop') {
     return
   }
   require('./other/make-cache')
-  const srcLocation = path.join(__dirname, `netlify/functions`)
-  const outputLocation = path.join(__dirname, `public/functions`)
-  if (fs.existsSync(outputLocation)) {
-    rimraf.sync(outputLocation)
-  }
-  fs.mkdirSync(outputLocation)
-  await zipFunctions(srcLocation, outputLocation)
+
   // can't run cypress on gatsby cloud currently
   if (!process.env.SKIP_BUILD_VALIDATION && !process.env.GATSBY_CLOUD) {
     const result = spawnSync('npm run test:e2e', {
