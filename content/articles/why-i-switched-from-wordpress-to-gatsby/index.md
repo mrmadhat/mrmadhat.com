@@ -6,6 +6,7 @@ description: "I finally made the decision to move my website away from WordPress
 of Gatsby. This article explains the motivation behind my decision and why I feel it's the best move for me."
 categories: ['development', 'wordpress', 'updates']
 keywords: ['wordpress vs gatsby']
+timeWriting: [3.5] 
 ---
 
 ## Performance
