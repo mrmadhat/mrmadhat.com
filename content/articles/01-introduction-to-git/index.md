@@ -1,7 +1,7 @@
 ---
 slug: introduction-to-git-part-1
 date: '2020-04-15' 
-title: 'Introduction to git'
+title: 'Introduction to git - Part 1'
 description: "This article is the first in a multi-part series discussing the
 git version-control system and it's core concepts."
 categories: ['development', 'git']
