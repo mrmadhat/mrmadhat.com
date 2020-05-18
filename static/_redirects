@@ -1,3 +1,5 @@
+/* https://danielgregory.dev/:splat
+
 /search q=:q                                                            /blog?q=:q
 /search                                                                 /blog
 
